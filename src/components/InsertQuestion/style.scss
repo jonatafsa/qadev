@@ -1,0 +1,229 @@
+.insert-new-question {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: calc(100% - 4rem);
+  // padding: 4rem;
+  background-color: #2D2449;
+  display: grid;
+  grid-template-rows: 1.2fr 1fr 100px 3rem;
+  gap: 1rem;
+  transition: 0.3s ease-in-out;
+
+  button {
+    width: 100%;
+    height: 3rem;
+    z-index: 97;
+    padding: 1rem 2rem;
+    font-weight: 500;
+    border: 0;
+    background-color: #318a3d;
+    color: rgb(255, 255, 255);
+    transition: .3s ease-in-out;
+    cursor: pointer;
+    opacity: .4;
+
+    &:hover {
+      filter: brightness(.85);
+      opacity: 1;
+    }
+
+    &:disabled {
+      pointer-events: none;
+      opacity: 0;
+    }
+  }
+
+  .insert-question {
+    display: grid;
+    grid-template-columns: 1fr .75fr;
+    gap: 2rem;
+    padding: 1rem 3rem;
+
+    .question {
+      height: 100%;
+      border-radius: 18px;
+      overflow: hidden;
+      position: relative;
+
+      h2 {
+        z-index: 97;
+        width: 100%;
+        position: absolute;
+        text-align: center;
+      }
+
+      textarea {
+        padding-top: 4rem;
+      }
+    }
+
+    .code {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      border-radius: 32px;
+      z-index: 98;
+
+      .code-icon {
+        position: absolute;
+        top: 0;
+        right: 15px;
+        width: 36px;
+        height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 97;
+        cursor: pointer;
+        transition: .3s ease-in-out;
+
+        &:hover {
+          background-color: rgba(255, 255, 255, 0.145);
+        }
+      }
+
+      .option {
+        width: 100%;
+        z-index: 98;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: .65rem;
+        margin-top: .5rem;
+
+        select {
+          padding: .75rem 2rem;
+          border: none;
+          border-radius: 12px;
+          background-color: #3B3464;
+          color: #fff;
+          font-size: .9rem;
+          font-weight: 600;
+          outline: none;
+          transition: .3s ease-in-out;
+
+
+          &:focus {
+            background-color: #564e92;
+            box-shadow: inset 0 0 0 1px #370064c2;
+          }
+        }
+      }
+
+      textarea {
+        z-index: -1;
+        padding-top: 4rem;
+        font-size: .85rem;
+        letter-spacing: 1px;
+        border-radius: 32px;
+      }
+
+      button {
+        background-color: rgb(35, 47, 156);
+        padding: .6rem 1rem;
+        border-radius: 6px;
+      }
+
+    }
+  }
+
+  textarea {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    resize: none;
+    // opacity: .1;
+    background-color: #c5c5c5;
+    border: 0;
+    font-size: 1.4rem;
+    font-family: inherit;
+    padding: 3rem;
+    color: rgba(68, 68, 68, 0.568);
+    border-radius: 32px;
+    z-index: 97;
+    opacity: .5;
+    transition: .5s ease-in-out;
+
+    &:focus {
+      opacity: 1;
+    }
+  }
+
+  .insert-answers {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    padding: 0 3rem;
+    gap: 2rem;
+
+    textarea {
+      padding-top: 4rem;
+      font-size: .9rem;
+    }
+  }
+
+  .time {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 0 3rem;
+
+    h2 {
+      width: 370px;
+    }
+
+    p {
+      padding: 2rem;
+    }
+  }
+
+  .buttons {
+    display: flex;
+
+    button {
+      width: 100%;
+      height: 3rem;
+      z-index: 97;
+      padding: 1rem 2rem;
+      font-weight: 500;
+      border: 0;
+      // background-color: #318a3d;
+      color: rgb(255, 255, 255);
+      transition: .3s ease-in-out;
+      cursor: pointer;
+      opacity: .4;
+
+      &:hover {
+        filter: brightness(.85);
+        opacity: 1;
+      }
+
+      &:disabled {
+        pointer-events: none;
+        opacity: 0;
+      }
+    }
+
+    .ok {
+      background-color: #318a3d;
+    }
+
+    .cancel {
+      background-color: #c53030;
+    }
+  }
+}
+
+.hide {
+  pointer-events: none;
+  opacity: 0;
+  display: none;
+}
+
+.top {
+  transform: translateX(-100%);
+}

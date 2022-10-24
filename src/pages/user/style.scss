@@ -1,0 +1,197 @@
+.screen {
+  padding: 2rem;
+  padding-left: 4rem;
+  display: grid;
+  grid-template-columns: 400px 1fr;
+
+  .user-left {
+    display: flex;
+    flex-direction: column;
+    gap: 4rem;
+    height: 100%;
+    flex-grow: 1;
+
+    .user-left-top {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      .avatar {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 200px;
+        height: 200px;
+        margin-bottom: 2rem;
+        position: relative;
+
+        input[type="file"] {
+          display: none;
+        }
+
+        label {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          background: rgba(0, 0, 0, 0.555);
+          border-radius: 50%;
+          cursor: pointer;
+          width: 93%;
+          height: 93%;
+          z-index: 98;
+          opacity: 0;
+          transition: all 0.3s ease-in-out;
+          backdrop-filter: blur(6px);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          svg {
+            width: 75px;
+            color: rgb(255, 255, 255);
+          }
+
+          &:hover {
+            opacity: 1;
+          }
+        }
+
+        img {
+          width: 93%;
+          height: 93%;
+          border-radius: 50%;
+          object-fit: cover;
+          z-index: 1;
+        }
+
+        svg {
+          position: absolute;
+          // top: 50%;
+          // left: 50%;
+          // transform: translate(-50%, -50%);
+          width: 200px;
+          height: 200px;
+          z-index: 95;
+
+          circle {
+            fill: none;
+            stroke-width: 4px;
+            stroke-dasharray: 617;
+            stroke-dashoffset: 616;
+
+            &:nth-child(1) {
+              stroke: #f3f3f350;
+              stroke-dashoffset: 0;
+            }
+
+            &:nth-child(2) {
+              stroke: var(--main-color-1);
+              stroke-dashoffset: calc(616 - (240 * var(--number)) / 100);
+            }
+          }
+        }
+
+        .level {
+          position: absolute;
+          top: 12px;
+          left: 12px;
+          background-color: var(--main-color-1);
+          width: 30px;
+          height: 30px;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          z-index: 99;
+          font-size: .65rem;
+        }
+      }
+
+      span {
+        font-weight: 600;
+      }
+
+      p {
+        font-size: .80rem;
+      }
+
+    }
+
+    .user-navigation {
+      width: 100%;
+      padding: 2rem;
+
+      ul {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        background-color: #332e599c;
+        border: #332E59 1px solid;
+        // padding: 1rem;
+        border-radius: 12px;
+
+        li {
+          padding: 1rem;
+          display: flex;
+          align-items: center;
+          gap: .5rem;
+          cursor: pointer;
+          transition: .3s ease-in-out;
+
+          &:hover {
+            background-color: #3B3464;
+            border-radius: 12px;
+            transform: scale(1.05);
+          }
+        }
+
+        .active {
+          background-color: #3B3464;
+          border-radius: 12px;
+          transform: scale(1.05);
+          border: rgba(255, 255, 255, 0.116) 1px solid;
+          box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+        }
+      }
+    }
+  }
+
+  .user-content {
+    // width: 100%;
+    height: 100%;
+    background-color: #332E59;
+    border-radius: 18px;
+    padding: 1rem;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: .5rem;
+      width: 400px;
+    }
+
+    .save {
+      position: absolute;
+      bottom: 1rem;
+      right: 1rem;
+      z-index: 98;
+      border: 0;
+      padding: .75rem 1.4rem;
+      border-radius: 8px;
+      background-color: var(--main-color-1);
+      color: #FFF;
+      opacity: 0.4;
+      transition: .3s ease-in-out;
+      cursor: pointer;
+
+      &:hover {
+        opacity: 1;
+      }
+    }
+  }
+}

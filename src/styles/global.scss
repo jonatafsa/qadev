@@ -1,0 +1,167 @@
+/* _________________________ Imports _________________________ */
+
+@import url('https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap');
+/* _________________________ Website Theme _________________________ */
+
+:root {
+  --hue-1: 280;
+  --hue-2: 47;
+  --main-color-1: hsl(var(--hue-1), 100%, 60%);
+  --main-color-ligth-1: hsl(var(--hue-1), 69%, 50%);
+  --main-color-2: hsl(var(--hue-2), 100%, 61%);
+  --main-color-ligth-2: hsl(var(--hue-2), 82%, 55%);
+  --section-padding: 7rem;
+  --porcentagem: 0;
+  --number: 0;
+  --timer: 0s;
+}
+
+body {
+  --bg-color: hsl(var(--hue-1), 19%, 15%);
+  --bg-color-1: hsl(var(--hue-1), 21%, 11%);
+  --bg-color-2: hsl(var(--hue-1), 23%, 19%);
+  --bg-color-3: hsl(var(--hue-1), 23%, 24%);
+  --bg-color-4: #000;
+  --bg-color-transparent: hsla(var(--hue-1), 23%, 19%, 0.6);
+  --heading-color: hsl(var(--hue-1), 100%, 95%);
+  --text-color: hsl(var(--hue-1), 14%, 81%);
+}
+
+body.ligth {
+  --bg-color: hsl(var(--hue-1), 100%, 97%);
+  --bg-color-1: hsl(var(--hue-1), 100%, 95.5%);
+  --bg-color-2: #fff;
+  --bg-color-3: hsl(var(--hue-1), 100%, 98%);
+  --bg-color-4: hsl(var(--hue-1), 25%, 15%);
+  --bg-color-transparent: rgba(255, 255, 255, 0.6);
+  --heading-color: hsl(var(--hue-1), 61%, 24%);
+  --text-color: hsl(var(--hue-1), 17%, 63%);
+}
+
+/* 
+    #ffd438
+*/
+
+body.ligth .st1 {
+  fill: hsla(var(--hue-1), 18%, 29%)
+}
+
+body.ligth .nav-link:hover::after,
+body.ligth .nav-link.active::after {
+  opacity: .6;
+}
+
+body.ligth .form-input:hover {
+  filter: brightness(110%);
+}
+
+*::-webkit-scrollbar {
+  width: .5rem;
+
+  &:hover {
+    width: 1.2rem;
+  }
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: rgb(253, 253, 253);
+  border-radius: .4rem;
+  margin-top: 15rem;
+}
+
+/* _________________________ General Styles _________________________ */
+
+*,
+*::before,
+*::after {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  overflow-x: hidden;
+  font-family: "Poppins", sans-serif;
+  transition: .3s background-color;
+  background-color: #752788;
+  color: var(--text-color);
+}
+
+body.stop-scrolling {
+  height: 100%;
+  overflow: hidden;
+}
+
+::selection {
+  background-color: hsla(var(--hue-1), 100%, 60%, 0.9);
+  color: #FFF;
+}
+
+a {
+  text-decoration: none;
+  cursor: pointer;
+}
+
+ul {
+  list-style: none;
+
+  a {
+    color: var(--text-color);
+  }
+}
+
+img {
+  // width: 100%;
+  height: 100%;
+}
+
+input {
+  width: 100%;
+  padding: 1.5rem 2rem;
+  border: none;
+  border-radius: 12px;
+  background-color: #3B3464;
+  color: #fff;
+  font-size: .9rem;
+  font-weight: 600;
+  outline: none;
+  transition: .3s ease-in-out;
+
+  &:focus {
+    background-color: #564e92;
+    box-shadow: inset 0 0 0 1px #370064c2;
+  }
+}
+
+.primary-bg-color {
+  background: #1d6b47;
+}
+
+.warning-bg-color {
+  background: #c2b00d;
+}
+
+.danger-bg-color {
+  background-image: linear-gradient(to right top, #d62828, #d62828, #d52828, #d52727, #d52727);
+}
+
+.primary-color {
+  color: #45a164;
+}
+
+.warning-color {
+  color: #888627;
+}
+
+.danger-color {
+  color: #a13f3f;
+}

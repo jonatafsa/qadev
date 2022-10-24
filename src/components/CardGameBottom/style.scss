@@ -1,0 +1,55 @@
+.game-bottom {
+  display: flex;
+  flex-direction: column;
+  min-width: 330px;
+  width: 25%;
+  height: 100%;
+  gap: .5rem;
+  transition: .3s ease-in-out;
+  border-radius: 28px;
+
+  &:hover {
+    background: #423c74;
+    box-shadow: inset 0 0 0 5px rgba(0, 0, 0, .5);
+  }
+
+  img {
+    width: 100%;
+    height: 70%;
+    object-fit: cover;
+    border-radius: 28px;
+  }
+
+  .bottom-game {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-size: .8rem;
+
+    img {
+      width: 3rem;
+      height: 3rem;
+      border-radius: 50%;
+    }
+
+    p {
+      width: 250px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    .tags {
+      display: flex;
+      gap: .65rem;
+
+      span {
+        background-color: rgb(255, 223, 79);
+        color: rgb(61, 61, 61);
+        padding: .2rem .6rem;
+        border-radius: 8px;
+        font-size: .65rem;
+      }
+    }
+  }
+}

@@ -1,0 +1,35 @@
+.menu {
+  position: absolute;
+  top: 6rem;
+  left: 1rem;
+  width: fit-content;
+  display: flex;
+  flex-direction: column;
+  z-index: 98;
+
+  ul {
+    overflow: hidden;
+    width: 4rem;
+    background: #332E59;
+    border-radius: 8px;
+
+    li {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 4rem;
+      font-size: 2rem;
+      cursor: pointer;
+      transition: .3s ease-in-out;
+
+      &:hover {
+        filter: brightness(1.2);
+        background-color: #3B3464;
+      }
+    }
+  }
+}
+
+.menu-active {
+  background-color: #3B3464;
+}
