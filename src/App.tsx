@@ -2,13 +2,14 @@ import { ToastContainer, Zoom } from 'react-toastify'
 import { AuthContextProvider } from './contexts/Auth-context'
 import { ExperienceProvider } from './contexts/Experience-context';
 import { ModalContextProvider } from './contexts/Modal-context';
-import '../node_modules/highlight.js/scss/atom-one-dark.scss'
+import { GameProvider } from './contexts/Game-context';
 
 import MyRoutes from './routes'
 
 import './styles/global.scss'
 import "react-toastify/dist/ReactToastify.css";
-import { GameProvider } from './contexts/Game-context';
+import 'swiper/css';
+import '../node_modules/highlight.js/scss/atom-one-dark.scss'
 
 export default function App() {
   return (

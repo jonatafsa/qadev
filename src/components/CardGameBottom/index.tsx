@@ -11,7 +11,7 @@ interface CardGameProps {
 
 export default function CardGameBottom(props: CardGameProps) {
   return (
-    <div className="game-bottom">
+    <div className="card-game-bottom">
       <img src={props.image} alt="game1" />
 
       <div className="bottom-game">

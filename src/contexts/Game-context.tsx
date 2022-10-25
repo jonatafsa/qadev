@@ -1,7 +1,7 @@
 //createContext - disponibiliza uma forma de passar dados entre a árvore de componentes
 //sem precisar passar props manualmente em cada nível.
 //ReactNode - O tipo ou valor primário que é criado ao usar o React
-import { createContext, useState, ReactNode, useEffect } from 'react';
+import { createContext, ReactNode } from 'react';
 
 //Importações do firebase Realtime Database
 import {
@@ -16,7 +16,6 @@ import {
 //Import dos Cookies
 import { toast } from 'react-toastify';
 import { useAuth } from '../hooks/use-auth';
-import { v4 as uuid } from 'uuid';
 
 //Tipagem do Componente PAI(ChallengesProvider)
 interface QuestionProviderProps {
@@ -48,6 +47,9 @@ interface Game {
   questions: QuestionsProps[]
   exp: number
   categories: string[]
+  createdBy: string
+  createdID: string
+  createdCover: string
 }
 
 interface GameProps {
@@ -111,7 +113,10 @@ export function GameProvider({ children, ...rest }: QuestionProviderProps) {
       }]
     }],
     exp: 100,
-    categories: ['Front-end', 'Back-end']
+    categories: ['Front-end', 'Back-end'],
+    createdBy: "game.createdBy",
+    createdID: "game.createdID",
+    createdCover: "game.createdCover",
   }
 
   let answerForEdit: AnswersProps[] = [{
@@ -148,8 +153,11 @@ export function GameProvider({ children, ...rest }: QuestionProviderProps) {
   function createGame(game: Game) {
 
     const newGame = {
-      id: uuid(),
+      id: game.id,
       cover: game.cover,
+      createdBy: game.createdBy,
+      createdID: game.createdID,
+      createdCover: game.createdCover,
       name: game.name,
       description: game.description,
       exp: game.exp,
@@ -263,9 +271,14 @@ export function GameProvider({ children, ...rest }: QuestionProviderProps) {
 
     const db = getDatabase();
     const dbRef = ref(db, 'games/' + gameId + '/ranking/');
+    const dbRefUser = ref(db, 'users/' + user!.uid);
+
+    const userRef = await get(dbRefUser)
 
     let newScore = {
       id: user?.uid,
+      name: userRef.val().nickName,
+      cover: user?.avatar,
       hitPercent,
       score,
       date: new Date().getTime()

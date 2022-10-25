@@ -71,47 +71,56 @@
     .rank-first,
     .rank-second,
     .rank-third {
-      width: 110px;
+      width: 200px;
       height: 110px;
       position: relative;
-      margin-left: 2rem;
+      // margin-left: 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
 
       img {
-        width: 100%;
-        height: 100%;
+        width: 110px;
+        height: 110px;
         border-radius: 50%;
         object-fit: cover;
       }
 
-      p {
+      .icon-medal {
         position: absolute;
-        bottom: -30px;
-        right: 50%;
-        transform: translate(50%, 0);
+        bottom: 0;
+        left: 0;
+        width: 30px;
+        height: 30px;
+      }
+
+      p {
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
         width: 100%;
         background: #332E59;
         padding: .45rem;
         border-radius: 8px;
         text-align: center;
         font-size: .75rem;
-
-        img {
-          position: absolute;
-          right: 50%;
-          bottom: 0;
-          object-fit: inherit;
-        }
       }
     }
 
-    .rank-second {
-      width: 90px;
-      height: 90px;
+    .rank-first img {
+      width: 80px;
+      height: 80px;
     }
 
-    .rank-third {
-      width: 90px;
-      height: 90px;
+    .rank-second img {
+      width: 80px;
+      height: 80px;
+    }
+
+    .rank-third img {
+      width: 80px;
+      height: 80px;
     }
 
     .element {

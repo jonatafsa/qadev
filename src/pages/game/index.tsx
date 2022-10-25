@@ -54,6 +54,15 @@ interface ScoreProps {
   correct: boolean;
 }
 
+interface rankingProps {
+  date: number
+  hitPercent: number
+  id: string
+  score: ScoreProps[]
+  name: string
+  cover: string
+}
+
 export default function Game() {
 
   const { expUpdate } = useExp();
@@ -66,6 +75,7 @@ export default function Game() {
   const [game, setGame] = useState({} as Game)
   const [questions, setQuestions] = useState<QuestionsProps[]>([])
   const [score, setScore] = useState<ScoreProps[]>([])
+  const [ranking, setRanking] = useState<rankingProps[]>([])
 
   useEffect(() => {
     const gameId = new URL(window.location.href).searchParams.get('id')
@@ -76,6 +86,13 @@ export default function Game() {
       if (snapshot.exists()) {
         setGame(snapshot.val())
         setQuestions(snapshot.val().questions)
+
+        //set 3 top hitPercent of game
+        const rankingRef = snapshot.val().ranking
+        const rankingArray = Object.keys(rankingRef).map((key) => rankingRef[key])
+        const rankingSorted = rankingArray.sort((a, b) => b.hitPercent - a.hitPercent).slice(0, 3)
+        setRanking(rankingSorted)
+
       } else {
         toast.error("No data available");
       }
@@ -94,6 +111,8 @@ export default function Game() {
     }
 
   }, [activeQuestion]);
+
+  console.log(ranking)
 
   //Inicia o jogo trazendo a primeira pergunta
   function startNewGame() {
@@ -291,20 +310,29 @@ export default function Game() {
                 <BsPlusCircleFill /> <p> {game.exp} exp</p>
               </div>
 
-              <span className="rank-first">
-                <img src="https://play-lh.googleusercontent.com/p7rx-TDw8mSXmnN5oreMbOrC6FTumoRsnz8rDxUHL6-7xYtLlzcyj1GS8UKyBx5eJg" alt="" />
-                <p>2º Mario <img src="/icon-first.svg" /></p>
-              </span>
+              {ranking[0] && (
+                <span className="rank-first">
+                  <img src={ranking[0].cover} alt="" />
+                  <img src="/icon-first.svg" className="icon-medal" />
+                  <p>{ranking[0].name}</p>
+                </span>
+              )}
 
-              <span className="rank-second">
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTR8QOHASjkYcbA8XeEE25AVowu25QSfN_qkPUV4g8mEUEamWYx-WMo3eLqpNZeEnHnEfg&usqp=CAU" alt="" />
-                <p>2º Mario <img src="/icon-second.svg" /></p>
-              </span>
+              {ranking[1] && (
+                <span className="rank-second">
+                  <img src={ranking[1].cover} />
+                  <img src="/icon-second.svg" className="icon-medal" />
+                  <p>{ranking[1].name} </p>
+                </span>
+              )}
 
-              <span className="rank-third">
-                <img src="https://http2.mlstatic.com/D_NQ_NP_860504-MLB41813292930_052020-O.jpg" alt="" />
-                <p>2º Mario <img src="/icon-third.svg" /></p>
-              </span>
+              {ranking[2] && (
+                <span className="rank-third">
+                  <img src={ranking[2].cover} />
+                  <img src="/icon-third.svg" />
+                  <p>{ranking[2].name}</p>
+                </span>
+              )}
 
               <div className="play" onClick={startNewGame}><FaPlay /></div>
             </div>

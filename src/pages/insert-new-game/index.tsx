@@ -1,17 +1,18 @@
-import { getDatabase, onValue, ref } from 'firebase/database'
+import { getDatabase, onValue, ref, remove } from 'firebase/database'
+import { getDownloadURL, getStorage, uploadBytes, ref as storageRef } from 'firebase/storage'
 import { useEffect, useState } from 'react'
-import Highlight from 'react-highlight'
-import { FaPlus, FaPlusSquare } from 'react-icons/fa'
+import { FaPlus } from 'react-icons/fa'
 import { toast } from 'react-toastify'
 import Expbar from '../../components/Expbar'
-import InsertAnswerBox from '../../components/InsertAnswerBox'
 import InsertQuestion from '../../components/InsertQuestion'
 import Menu from '../../components/Menu'
 import Rightbar from '../../components/Right-bar'
 import { useAuth } from '../../hooks/use-auth'
 import { useGame } from '../../hooks/use-game'
 import { useModal } from '../../hooks/use-modal'
+import { v4 as uuidv4 } from 'uuid'
 import './style.scss'
+import Cookies from 'js-cookie'
 
 interface AnswersProps {
   id: number;
@@ -27,6 +28,9 @@ interface QuestionsProps {
   answers?: AnswersProps[]
   correctAnswer?: number
   time: number;
+  createdBy: string
+  createdID: string
+  createdCover: string
 }
 
 export default function InsertNewGame() {
@@ -39,10 +43,10 @@ export default function InsertNewGame() {
   const [questionForEdit, setQuestionForEdit] = useState<QuestionsProps>({} as QuestionsProps)
   const [categories, setCategoties] = useState([])
   const [category, setCategoty] = useState("")
-  const [cover, setCover] = useState("")
   const [name, setName] = useState("")
   const [description, setDescription] = useState("")
   const [exp, setExp] = useState(0)
+  const [image, setImage] = useState<HTMLInputElement>({} as HTMLInputElement)
 
   useEffect(() => {
     const db = getDatabase()
@@ -62,22 +66,23 @@ export default function InsertNewGame() {
   }
 
   function updateImageLogo(e: any) {
-    const data = new FormData()
-    data.append('image', e.target.files[0])
 
-    fetch('http://localhost:3333/update-avatar', {
-      method: 'POST',
-      body: data,
-    }).then(response => response.json())
-      .then(data => {
-        const url = 'http://localhost:3333/uploads/' + data[0].path
-        setCover(url)
-        toast.success('Imagem de capa enviada!')
-        const avatar = document.querySelector('#gameLogo') as HTMLImageElement
-        avatar.src = url
-      }).catch((error) => {
-        toast.error('Erro ao atualizar a imagem de perfil!' + error.code)
-      })
+    const avatar = document.querySelector('#gameLogo') as HTMLImageElement
+    avatar.src = URL.createObjectURL(e.target.files[0])
+
+    // fetch('http://localhost:3333/update-avatar', {
+    //   method: 'POST',
+    //   body: data,
+    // }).then(response => response.json())
+    //   .then(data => {
+    //     const url = 'http://localhost:3333/uploads/' + data[0].path
+    //     setCover(url)
+    //     toast.success('Imagem de capa enviada!')
+    //     const avatar = document.querySelector('#gameLogo') as HTMLImageElement
+    //     avatar.src = url
+    //   }).catch((error) => {
+    //     toast.error('Erro ao atualizar a imagem de perfil!' + error.code)
+    //   })
   }
 
   function insertCategory() {
@@ -103,20 +108,43 @@ export default function InsertNewGame() {
   }
 
   function togglecreateGame() {
-    if (name === "" || cover === "" || description === "") {
+    if (name === "" || !image || description === "") {
       toast.error('Preencha todos os campos!')
-    } else {
-      const InsertNewGame = {
-        id: "",
-        name,
-        description,
-        cover,
-        exp,
-        categories,
-        questions
-      }
-      createGame(InsertNewGame)
+      return
     }
+
+    const id = uuidv4()
+    const nickName = Cookies.get('nickName')
+
+    const storage = storageRef(getStorage(), 'games/' + id)
+    uploadBytes(storage, image.files![0]).then((snapshot) => {
+      getDownloadURL(snapshot.ref).then(url => {
+
+        const InsertNewGame = {
+          id,
+          name,
+          createdBy: nickName || "Anônimo",
+          createdID: user!.uid,
+          createdCover: user?.avatar || "",
+          description,
+          cover: url,
+          exp,
+          categories,
+          questions
+        }
+        createGame(InsertNewGame)
+        const db = getDatabase()
+        const dbRef = ref(db, 'users/' + user?.uid + '/questions-for-update')
+        remove(dbRef)
+      })
+    }).catch((error) => {
+      toast.error('Erro ao criar o jogo!' + error.code)
+    })
+  }
+
+  function closeGameCreate() {
+    document.querySelector('.insert-game')?.classList.add('hide')
+    document.querySelector('.games-for-admin')?.classList.remove('hide')
   }
 
   return (
@@ -145,7 +173,7 @@ export default function InsertNewGame() {
                 <input
                   type="file"
                   id="insertQuestionImage"
-                  onChange={updateImageLogo}
+                  onChange={e => { setImage(e.target), updateImageLogo(e) }}
                 />
                 <img src="" alt="" id="gameLogo" />
               </div>
@@ -187,6 +215,7 @@ export default function InsertNewGame() {
               </div>
 
               <button onClick={togglecreateGame}>Salvar Game</button>
+              <button className="cancel" onClick={closeGameCreate}>Cancelar</button>
             </div>
 
             <div className="insert-game-content">

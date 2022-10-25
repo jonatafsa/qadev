@@ -1,17 +1,16 @@
-import { getAuth, updateProfile } from 'firebase/auth'
+import { getAuth, updateProfile } from 'firebase/auth';
 import { getDatabase, ref, update } from 'firebase/database'
+import { getDownloadURL, getStorage, ref as storageRef, uploadBytes } from "firebase/storage";
 import Cookies from 'js-cookie'
 import { useState } from 'react'
 import { BsCardImage } from 'react-icons/bs'
 import { FaHome } from 'react-icons/fa'
 import { Navigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
-import Expbar from '../../components/Expbar'
 import Menu from '../../components/Menu'
-import Rightbar from '../../components/Right-bar'
 import { useAuth } from '../../hooks/use-auth'
 import { useExp } from '../../hooks/use-experience'
-import app from '../../services/firebase'
+import app from '../../services/firebase';
 import './style.scss'
 
 export default function User() {
@@ -24,12 +23,12 @@ export default function User() {
     const data = new FormData()
     data.append('image', e.target.files[0])
 
-    fetch('http://localhost:3333/update-avatar', {
-      method: 'POST',
-      body: data,
-    }).then(response => response.json())
-      .then(data => {
-        const url = 'http://localhost:3333/uploads/' + data[0].path
+    const storage = getStorage()
+    const stRef = storageRef(storage, `images/${user?.uid}`)
+
+    uploadBytes(stRef, e.target.files[0]).then((snapshot) => {
+      getDownloadURL(snapshot.ref).then(url => {
+        console.log(url)
         const auth = getAuth(app).currentUser
         updateProfile(auth!, {
           photoURL: url,
@@ -42,10 +41,13 @@ export default function User() {
           // An error occurred
           toast.error('Erro ao atualizar a imagem de perfil!' + error.code)
         })
-      }).catch((error) => {
-        toast.error('Erro ao atualizar a imagem de perfil!' + error.code)
-      })
 
+        const db = getDatabase()
+        update(ref(db, `users/${user?.uid}`), {
+          avatar: url
+        })
+      })
+    });
     // Now you have valid `imageURL` from async call
 
   }
