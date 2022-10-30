@@ -188,7 +188,7 @@ export default function Game() {
     if (answerSelected === correctAnswer && answerSelected !== "") {
       //Adiciona o som e mensagem de acerto
       document.querySelector('.hit-message')?.classList.add('show-message')
-      // new Audio(hitSound).play()
+      new Audio(hitSound).play()
 
       //Adiciona o score
       let scoreArr = score
@@ -202,7 +202,7 @@ export default function Game() {
     } else {
       //Adiciona o som e mensagem de erro
       document.querySelector('.error-message')?.classList.add('show-message')
-      // new Audio(errorSound).play()
+      new Audio(errorSound).play()
 
       //Adiciona o score
       let scoreArr = score
@@ -270,19 +270,6 @@ export default function Game() {
     percentage === 100 && (image = <img className="medal" src="/medal-vip-gold.svg" alt="" />)
 
     return image
-  }
-
-  function getRankedUser(user: string) {
-
-    const dbRef = ref(getDatabase(), 'users/' + user)
-
-    get(dbRef).then((snapshot) => {
-      setRankOne({
-        nickName: snapshot.val().nickName,
-        avatar: snapshot.val().avatar,
-      })
-      // console.log(snapshot.val())
-    }).catch((error) => error)
   }
 
   //Condicional que verifica se o usuário está autenticado
@@ -368,7 +355,7 @@ export default function Game() {
             <div className="question">
               <h1>{questions[activeQuestion]?.question || ""}</h1>
 
-              {questions[activeQuestion]?.code && (
+              {questions[activeQuestion]?.codeText && (
                 <Highlight className="question-code">
                   {questions[activeQuestion]?.codeText || ""}
                 </Highlight>
