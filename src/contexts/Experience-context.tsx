@@ -109,9 +109,11 @@ export function ExperienceProvider({ children, ...rest }: ExperienceProviderProp
   //Função responsável por subir o nível do usuário e Abrir o Modal
   function levelUp() {
     const db = getDatabase()
-    const expRef = DatabaseRef(db, 'users/' + user?.uid + '/level')
+    const levelRef = DatabaseRef(db, 'users/' + user?.uid + '/level')
+    const expRef = DatabaseRef(db, 'users/' + user?.uid + '/currentExperience')
 
-    DatabaseSet(expRef, level + 1)
+    DatabaseSet(levelRef, level + 1)
+    DatabaseSet(expRef, currentExperience - experienceToNextLevel)
 
     setCurrentExperience(currentExperience - experienceToNextLevel)
     setLevel(level + 1)

@@ -63,6 +63,11 @@ interface rankingProps {
   cover: string
 }
 
+interface User {
+  avatar: string;
+  nickName: string;
+}
+
 export default function Game() {
 
   const { expUpdate } = useExp();
@@ -76,6 +81,9 @@ export default function Game() {
   const [questions, setQuestions] = useState<QuestionsProps[]>([])
   const [score, setScore] = useState<ScoreProps[]>([])
   const [ranking, setRanking] = useState<rankingProps[]>([])
+  const [rankOne, setRankOne] = useState<User>({} as User)
+  const [rankTwo, setRankTwo] = useState<User>({} as User)
+  const [rankThree, setRankThree] = useState<User>({} as User)
 
   useEffect(() => {
     const gameId = new URL(window.location.href).searchParams.get('id')
@@ -92,6 +100,14 @@ export default function Game() {
         const rankingArray = Object.keys(rankingRef).map((key) => rankingRef[key])
         const rankingSorted = rankingArray.sort((a, b) => b.hitPercent - a.hitPercent).slice(0, 3)
         setRanking(rankingSorted)
+
+        //set 1st, 2nd and 3rd of ranking
+        const rankOneRef = ref(db, 'users/' + rankingSorted[0].id)
+        get(rankOneRef).then((snapshot) => { setRankOne(snapshot.val()) })
+        const rankTwoRef = ref(db, 'users/' + rankingSorted[1].id)
+        get(rankTwoRef).then((snapshot) => { setRankTwo(snapshot.val()) })
+        const rankThreeRef = ref(db, 'users/' + rankingSorted[2].id)
+        get(rankThreeRef).then((snapshot) => { setRankThree(snapshot.val()) })
 
       } else {
         toast.error("No data available");
@@ -111,8 +127,6 @@ export default function Game() {
     }
 
   }, [activeQuestion]);
-
-  console.log(ranking)
 
   //Inicia o jogo trazendo a primeira pergunta
   function startNewGame() {
@@ -248,7 +262,6 @@ export default function Game() {
 
     //pegar porcentagem das questões acertadas
     let percentage = (hit / questions.length) * 100
-    console.log("percentage", percentage);
 
     percentage > 40 && hit < 60 && (image = <img className="medal" src="/medal-gold.svg" alt="" />)
     percentage <= 40 && (image = <img className="medal" src="/medal-silver.svg" alt="" />)
@@ -257,6 +270,19 @@ export default function Game() {
     percentage === 100 && (image = <img className="medal" src="/medal-vip-gold.svg" alt="" />)
 
     return image
+  }
+
+  function getRankedUser(user: string) {
+
+    const dbRef = ref(getDatabase(), 'users/' + user)
+
+    get(dbRef).then((snapshot) => {
+      setRankOne({
+        nickName: snapshot.val().nickName,
+        avatar: snapshot.val().avatar,
+      })
+      // console.log(snapshot.val())
+    }).catch((error) => error)
   }
 
   //Condicional que verifica se o usuário está autenticado
@@ -312,17 +338,17 @@ export default function Game() {
 
               {ranking[0] && (
                 <span className="rank-first">
-                  <img src={ranking[0].cover} alt="" />
+                  <img src={rankOne.avatar || "https://media.istockphoto.com/vectors/missing-image-of-a-person-placeholder-vector-id1288129985?k=20&m=1288129985&s=612x612&w=0&h=OHfZHfKj0oqIDMl5f_oRqH13MHiB63nUmySYILbWbjE="} alt="Avatar" />
                   <img src="/icon-first.svg" className="icon-medal" />
-                  <p>{ranking[0].name}</p>
+                  <p>{rankOne.nickName || "Sem nickname"}</p>
                 </span>
               )}
 
               {ranking[1] && (
                 <span className="rank-second">
-                  <img src={ranking[1].cover} />
+                  <img src={rankTwo.avatar || "https://media.istockphoto.com/vectors/missing-image-of-a-person-placeholder-vector-id1288129985?k=20&m=1288129985&s=612x612&w=0&h=OHfZHfKj0oqIDMl5f_oRqH13MHiB63nUmySYILbWbjE="} alt="Avatar" />
                   <img src="/icon-second.svg" className="icon-medal" />
-                  <p>{ranking[1].name} </p>
+                  <p>{rankTwo.nickName || "Sem nickname"}</p>
                 </span>
               )}
 
